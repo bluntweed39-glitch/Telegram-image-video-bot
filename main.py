@@ -22,15 +22,15 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await file.download_to_drive(image_path)
 
         # Create 10-second video with slow zoom
-        clip = ImageClip(image_path).set_duration(10)
+        clip = ImageClip(image_path).with_duration(10)
 
         def zoom(t):
             return 1 + 0.12 * (t / 10)
 
-        clip = clip.resize(zoom)
-        clip = clip.set_position("center")
+        clip = clip.resized(zoom)
+        clip = clip.with_position("center")
 
-        final = clip.resize(height=1280)
+        final = clip.resized(height=1280)
         final.write_videofile(
             video_path,
             fps=24,
