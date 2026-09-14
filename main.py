@@ -23,14 +23,14 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Create 10-second video with slow zoom
         clip = ImageClip(image_path).with_duration(10)
+        clip = clip.resized(height=1280)
+        clip = clip.with_position("center")
 
         def zoom(t):
             return 1 + 0.12 * (t / 10)
 
-        clip = clip.resized(zoom)
-        clip = clip.with_position("center")
+        final = clip.resized(zoom)
 
-        final = clip.resized(height=1280)
         final.write_videofile(
             video_path,
             fps=24,
@@ -60,7 +60,7 @@ def main():
 
     app = Application.builder().token(TOKEN).build()
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
-    
+
     print("Bot is starting...")
     app.run_polling()
 
